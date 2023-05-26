@@ -1,0 +1,719 @@
+////////////////////////////////////////////////////////////////////////////
+//                    Flight Management System                            //
+////////////////////////////////////////////////////////////////////////////
+
+//Header Files
+#include <fstream.h>
+#include <iostream.h>
+#include <string.h>
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+
+#include <ctype.h>
+/////////////////////////////////////////////////////////
+
+  int i = 5; int fnd=0;   //used for output manipulation purpose
+  class flight            //stores the details of flights
+  {
+    private:
+        int flightno;
+	     char flightname[50];
+        char ftime[8];
+        char depart[50];
+	     char destination[50];
+        char newftime[8];
+        int newfno;
+        char newdest[50];
+        char newdepart[50];
+        char newfname[50];
+
+    public:
+
+
+        int retflno()
+        {
+              return flightno;
+        }
+
+        void getdata()     //gets the details of flights
+        {
+	          cout<<"\n\n\tEnter Flight Number        : ";
+	          cin>>flightno;
+             cout<<"\n\tEnter Flight Name          : ";
+	          gets(flightname);
+             for( int i=0; flightname[i]!='\0';i++)
+                 flightname[i]=toupper(flightname[i]);
+
+	          cout<<"\n\tEnter Boarding Point       : ";
+             gets(depart);
+             for( int i=0; depart[i]!='\0';i++)
+                 depart[i]=toupper(depart[i]);
+
+	          cout<<"\n\tEnter Destination          : ";
+             gets(destination);
+             for( int i=0; destination[i]!='\0';i++)
+                 destination[i]=toupper(destination[i]);
+
+             cout<<"\n\tEnter Departure Time(hh:mm): ";
+	          gets(ftime);
+        }
+
+        void putdata()      //displays the details of flights
+        {
+             if(::fnd==0)
+             {	     cout<<"\n\n\tFLIGHT NO   FLIGHT NAME       FROM        TO          DEPARTURE TIME ";
+	                 cout<<"\n\t____________________________________________________________________";
+             }
+             gotoxy(9,::i);
+             cout<<flightno;
+             gotoxy(21,::i);
+             cout<<flightname;
+             gotoxy(39,::i);
+             cout<<depart;
+             gotoxy(51,::i);
+             cout<<destination;
+             gotoxy(63,::i);
+             cout<<ftime;
+             cout<<"\n\t--------------------------------------------------------------------\n\n";
+             ::i+=2;
+
+        }
+
+        void modify()   //used to modify flight details
+        {
+             cout<<"\n\tEnter New Details ";
+             cout<<"\n\n\tEnter New Flight No (Enter '0' to retain old entry)            : ";
+             cin>>newfno;
+
+             cout<<"\n\tEnter New Flight Name (Enter '*' to retain old entry)          : ";
+             gets(newfname);
+             for( int i=0; newfname[i]!='\0';i++)
+                 newfname[i]=toupper(newfname[i]);
+
+             cout<<"\n\tEnter New Boarding Point (Enter '*' to retain old entry)       : " ;
+             gets(newdepart);
+             for( int i=0; newdepart[i]!='\0';i++)
+                 newdepart[i]=toupper(newdepart[i]);
+
+             cout<<"\n\tEnter New Destination (Enter '*' to retain old entry)          : ";
+             gets(newdest);
+             for( int i=0; newdest[i]!='\0';i++)
+                 newdest[i]=toupper(newdest[i]);
+
+             cout<<"\n\tEnter New Departure Time(hh:mm)(Enter '*' to retain old entry) : ";
+             cin>>newftime;
+
+
+             if(newfno!= 0)
+                flightno=newfno;
+	          if(strcmp(newfname,"*")!=0)
+                strcpy(flightname,newfname);
+             if(strcmp(newdepart,"*")!=0)
+                strcpy(depart,newdepart);
+             if(strcmp(newdest,"*")!=0)
+                strcpy(destination,newdest);
+             if(strcmp(newftime,"*")!=0)
+                strcpy(ftime,newftime);
+
+        }
+
+
+         void display();         //To display all flight details
+         void add();             //To add new flights
+         void search();          //To search flights
+         int SearchByPlace();    //To search flight by place
+         void mod();             //To modify flight details
+         void del();             //To delete flight details
+
+
+  }p;    //object of class flight
+//**********************************************************************
+
+  class ticket // stores details of tickets
+  {
+
+     private:
+         int age;
+	      char name[50];
+	      char tdate[15];
+	      char gender[3];
+	      int tktno; // ticket no
+	      int flno;  // flight no
+
+     public:
+
+	      void get()             // get details of user for tickets
+	      {
+             randomize();
+	          tktno=random(100)+100;
+             cout<<"\n\tEnter Flight No. Of Preferred Airline : ";
+	          cin>>flno;
+             cout<<"\n\n\tPress Enter To Start Booking";
+	          getch();
+	          clrscr();
+             cout<<"\n\t===================================================================="
+		           <<"\n\t                          BOOK FLIGHTS                              "
+		           <<"\n\t====================================================================";
+	          cout<<"\n\n\n\tEnter your details ";
+	          cout<<"\n\n\tEnter Name                         : ";
+	          gets(name);
+             for( int i=0; name[i]!='\0';i++)
+                 name[i]=toupper(name[i]);
+
+	          cout<<"\n\tEnter Age                          : ";
+	          cin>>age;
+
+	          cout<<"\n\tEnter Gender                       : ";
+	          gets(gender);
+             for( int i=0; gender[i]!='\0';i++)
+                 gender[i]=toupper(gender[i]);
+
+	          cout<<"\n\tEnter Departing Date(dd/mm/yyyy)   : ";
+	          cin>>tdate;
+
+	          cout<<"\n\n\n\t\tPress ENTER To Finish Booking";
+	          getch();
+	          cout<<"\n\n\tYour Ticket No. is : "<<tktno;
+
+	      }
+
+         void put()             // display details of tickets
+	      {
+			    cout<<"\n\tPassenger Details: ";
+			    cout<<"\n\n\tTicket No.     : "<<tktno;
+			    cout<<"\n\n\tName           : "<<name;
+			    cout<<"\n\n\tAge            : "<<age;
+	          cout<<"\n\n\tGender         : "<<gender;
+	          cout<<"\n\n\tDeparting Date : "<<tdate;
+			    cout<<"\n\n\tFlight No.     : "<<flno;
+	      }
+
+	      void booking();      //To book Tickets
+	      void cancellation(); //To cancel Tickets
+	      void showticket();   //To display Tickets
+
+
+
+  }t;  //object of class "ticket"
+
+//**********************************************************************
+  void flight::display()               //  display details of a file
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+	      <<"\n\t                      DISPLAY ALL FLIGHTS                           "
+	      <<"\n\t===================================================================="
+	      <<endl;
+
+     ifstream fin;
+     fin.open("flight.dat", ios::in|ios::binary);
+     if(!fin)
+        cout<<"\n\n\n\n\n\n\tFile can't be opened " ;
+     else
+     {
+        ::i=9; ::fnd=0;
+        while(fin.read((char*)&p, sizeof(p)))
+        {   p.putdata();
+	         ::fnd=1;
+        }
+     }
+     cout<<"\n\tPress Enter.";
+     fin.close();
+  }
+//**********************************************************************
+  void flight::add()                 // add record to the file
+  {
+     clrscr();
+
+     ofstream fout;
+     fout.open("flight.dat", ios::out|ios::app|ios::binary);
+
+     if(!fout)
+        cout<<"File can't be opened";
+     else
+     {
+	     char ch='y';
+	     while(ch=='y' || ch=='Y')
+	     {  clrscr();
+	        cout<<"\n\t===================================================================="
+	            <<"\n\t                          ADD FLIGHTS                               "
+	            <<"\n\t====================================================================";
+	        p.getdata();
+	        fout.seekp(0,ios::end);
+	        fout.write((char*) &p, sizeof(p));
+	        cout<<"\n\n\n\n\tDo You Want To Add More Flights ? (y/n): ";
+	        cin>>ch;
+        }
+     }
+     fout.close();
+
+  }
+//**********************************************************************
+  void flight::search()         // search any record from the file
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+	      <<"\n\t                          SEARCH FLIGHTS                            "
+	      <<"\n\t====================================================================";
+     int found =0;
+
+     ifstream fo;
+     fo.open("flight.dat", ios::in|ios::binary);
+
+     if(!fo)
+        cout<<"\n\n\tFile Can't be Found ... ";
+     else
+     {  cout<<"\n\n\tEnter The Flight No. Whose Details You Want To See : ";
+	     int fn;
+        cin>>fn;
+	     while(!fo.eof()&&found==0)
+	     {
+	         fo.read((char*)&p, sizeof(p));
+            int fno=p.retflno();
+	         if(fno==fn)
+            {
+               found=1; ::i=11;::fnd=0;
+		         p.putdata();
+		         cout<<"\n\n\tPress 'Enter' ";
+		         getch();
+
+	         }
+	     }
+	     if(found==0)
+	     {  cout<<"\n\n\tNo such Flight is in Service " ;
+	        getch();
+	     }
+     }
+     fo.close();
+  }
+
+//**********************************************************************
+  int flight::SearchByPlace()         // search any record from the file
+  {
+
+     char from[50],to[50];
+     cout<<"\n\n\tEnter Boarding Point   : ";
+     gets(from);
+     cout<<"\n\tEnter Your Destination : ";
+     gets(to);
+     int found =0;
+
+     ifstream fo;
+     fo.open("flight.dat", ios::in|ios::binary);
+
+     if(!fo)
+         cout<<"\n\n\t\tFile Can't be Found ... ";
+     else
+     {
+	      ::i=16; ::fnd=0;
+         cout<<"\n\n\t                         AVAILABLE FLIGHTS \n";
+	      fo.seekg(0);
+         while(fo.read((char*)&p, sizeof(p)))
+	   	{
+			   if(strcmpi(p.depart,from)==0 && strcmpi(p.destination,to)==0)
+			   {
+		         found=1;
+		         p.putdata();
+               ::fnd=1;
+      		}
+         }
+     }
+	  fo.close();
+     return found;
+  }
+
+//**********************************************************************
+  void flight::mod()             // modify any record
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+         <<"\n\t                     MODIFY FLIGHT DETAILS                          "
+         <<"\n\t====================================================================";
+
+     fstream fio;
+     fio.open("flight.dat", ios::in|ios::out|ios::binary);
+
+     int fno; int found =0,count=0;
+     cout<<"\n\n\tEnter The Flight No. Whose Record Is To Be Modified : ";
+     cin>>fno;
+     while(!fio.eof()&&found==0)
+     {
+         count++;
+         fio.read((char *)&p, sizeof(p));
+         int fn=p.retflno();
+         if(fn==fno)
+         {
+	         ::i=13;::fnd=0;
+	         cout<<"\n\tThe Current Details Are:\n";
+	         p.putdata();
+	         p.modify();
+	         fio.seekp((count-1)*sizeof(p));
+	         fio.write((char*) &p, sizeof(p));
+	         found=1 ;
+	         cout<<"\n\tRecord Modified";
+         }
+     }
+     if(found==0)
+        cout<<"\n\n\tRecord Does Not Exist !!\n";
+     fio.close();
+  }
+//**********************************************************************
+  void flight::del()
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+         <<"\n\t                     DELETE FLIGHT DETAILS                          "
+         <<"\n\t====================================================================";
+     int fn,found=0; char confirm; ::fnd=0;::i=11;
+
+     fstream inout("flight.dat", ios::in|ios::binary);
+     fstream inout_temp("temp.dat", ios::out|ios::binary);
+
+     inout.seekg(0,ios::beg);
+     inout_temp.seekp(0,ios::beg);
+
+     cout<<"\n\n\tEnter The Flight No. Whose Record Is To Be Deleted : ";
+     cin>>fn;
+     while(inout.read((char*)&p, sizeof(p)))
+     {
+        int fno=p.retflno();
+        if(fno==fn)
+        {
+           p.putdata();
+	        found=1;
+	        cout<<"\n\n\tAre You Sure You Want To Delete This Record? (y/n) : ";
+	        cin>>confirm ;
+	        if(confirm !='y'&&confirm!='Y')
+	        {
+	           inout_temp.write((char*)&p, sizeof(p));
+	           cout<<"\n\n\tRecord not deleted";
+	        }
+	        else
+	           cout<<"\n\n\tRecord Deleted";
+
+        }
+        else
+	        inout_temp.write((char*)&p, sizeof(p));
+     }
+     if(found==0)
+        cout<<"\n\n\tRecord not found !! \n";
+     inout.close();
+     inout_temp.close();
+     remove("flight.dat");
+     rename("temp.dat","flight.dat");
+  }
+//**********************************************************************
+  void ticket::booking()                  // ticket booking
+  {
+     clrscr();
+     char b;
+     do
+     {
+        clrscr();
+        cout<<"\n\t===================================================================="
+            <<"\n\t                          BOOK FLIGHTS                              "
+            <<"\n\t====================================================================";
+        int c = p.SearchByPlace();
+        if(c==0)
+        {  cout<<"\n\n\tNo such Flight is in Service " ;
+	        getch();
+        }
+
+	     else
+		  {
+			  ofstream fio;
+           fio.open("ticket.dat", ios::out|ios::app|ios::binary);
+			  if(!fio)
+			     cout<<"File Can't Be Opened..";
+	        else
+	        {
+			     t.get();
+			     fio.write((char*)&t, sizeof(t));
+			     cout<<"\n\n\tDo You Want To Book More Tickets ?(y/n)";
+              cin>>b;
+	        }
+
+           fio.close();
+		  }
+
+
+     }while(b=='y'||b=='Y');
+
+
+  }
+//**********************************************************************
+  void ticket::cancellation() //ticket cancellation
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+         <<"\n\t                     TICKET CANCELLATION                            "
+         <<"\n\t====================================================================";
+     int tn,found=0; char confirm;
+
+     fstream inout("ticket.dat", ios::in|ios::binary);
+     fstream inout_temp("temp.dat", ios::out|ios::binary);
+
+     inout.seekg(0,ios::beg);
+     inout_temp.seekp(0,ios::beg);
+
+     cout<<"\n\n\tEnter The Ticket No. Which Is To Be Cancelled : ";
+     cin>>tn;
+     while(inout.read((char*)&t, sizeof(t)))
+     {
+        if(t.tktno==tn)
+        {
+	        t.put();
+	        found=1;
+           cout<<"\n\n\tAre You Sure You Want To Cancel This Ticket? (y/n) : ";
+	        cin>>confirm ;
+	        if(confirm !='y'&&confirm!='Y')
+	        {
+              inout_temp.write((char*)&t, sizeof(t));
+	           cout<<"\n\n\tTicket Not Cancelled";
+	        }
+	        else
+	        cout<<"\n\n\tTicket Cancelled";
+
+        }
+        else
+	        inout_temp.write((char*)&t, sizeof(t));
+     }
+     if(found==0)
+        cout<<"\n\n\tRecord not found !! \n";
+     inout.close();
+     inout_temp.close();
+     remove("ticket.dat");
+     rename("temp.dat","ticket.dat");
+  }
+//**********************************************************************
+  void ticket::showticket()  //displays ticket
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+	      <<"\n\t                          SHOW TICKETS                              "
+	      <<"\n\t====================================================================";
+     int found =0 ,pfound=0;
+
+     ifstream fo; ifstream fin;
+     fin.open("flight.dat",ios::in|ios::binary);
+     fo.open("ticket.dat", ios::in|ios::binary);
+
+     if(!fo)
+        cout<<"\n\n\tFile Can't be Found ... ";
+     else
+     {  cout<<"\n\tEnter The Ticket No. Whose Details You Want To See : ";
+	     int tn;
+	     cin>>tn;
+	     while(!fo.eof()&&found==0)
+	     {
+           fo.read((char*)&t, sizeof(t));
+           if(t.tktno==tn)
+	        {
+		        found=1;
+		        t.put();
+
+	        }
+	     }
+	     if(found==1)
+	     {
+	        while(!fin.eof()&&pfound==0)
+	        {
+	            fin.read((char*)&p, sizeof(p));
+               int fno=p.retflno();
+	            if(fno==t.flno)
+	            {
+		            pfound=1;::i=25; ::fnd=0;
+                  cout<<"\n\n\tFlight Details: ";
+		            p.putdata();
+		            cout<<"\n\tPress 'Enter' ";
+		            getch();
+
+
+               }
+	        }
+	     }
+        if(found==0)
+	     {  cout<<"\n\n\tTicket Not Found " ;
+	        getch();
+	     }
+     }
+     fo.close();
+     fin.close();
+  }
+//**********************************************************************
+
+  void main()
+  {
+     clrscr();
+     cout<<"\n\t===================================================================="
+         <<"\n\t                          GLOBAL TRAVELS                            "
+         <<"\n\t====================================================================";
+     cout<<"\n\n\t(1.)  ADMINISTRATOR  ";
+     cout<<"\n\n\t(2.)  USER   ";
+     cout<<"\n\n\t(3.)  EXIT SOFTWARE ";
+     int opt;
+     cout<<"\n\n\tEnter Your Choice : ";
+     cin>>opt;
+     clrscr();
+     if(opt==3)
+     {
+        cout<<"\n\n\tExiting from the software ... ";
+	     cout<<"\n\n\n\n\tThanks for trying it...Press ENTER";
+        getch();
+	     exit(0);
+     }
+
+     else if(opt==2)
+     {
+        char ch='y';
+        while(ch=='y'||ch=='Y')
+        {
+           clrscr();
+	        cout<<"\n\t===================================================================="
+		         <<"\n\t                          GLOBAL TRAVELS                            "
+		         <<"\n\t====================================================================";
+           cout<<"\n\n\tM E N U !!! ";
+	        cout<<"\n\n\t(1.) Display All Flight Details . ";
+           cout<<"\n\n\t(2.) Book A Flight . ";
+           cout<<"\n\n\t(3.) Display Your Ticket . ";
+           cout<<"\n\n\t(4.) Cancel A Ticket . ";
+           cout<<"\n\n\t(5.) Exit . ";
+           int choice;
+           cout<<"\n\n\n\tEnter your choice... : ";
+           cin>>choice ;
+
+	        clrscr();
+           switch(choice)
+           {
+			     case 1 : p.display();
+			              getch();
+							  break ;
+			     case 2 : t.booking();
+							  break ;
+	           case 3 : t.showticket();
+				           break ;
+			     case 4 : t.cancellation();
+                       getch();
+							  break ;
+              case 5 : cout<<"\n\n\n\tExiting from the software ... ";
+                       cout<<"\n\n\n\n\n\n\tThanks for trying it...Press ENTER";
+			              getch();
+                       exit(0);
+                       break ;
+	           default: cout<<"\n\n\tUnknown choice...";
+			              cout<<"\n\n\tWant to enter the choice again?(y/n)";
+			              cin>>ch;
+	        }
+	     }
+     }
+
+	  else if(opt==1)
+	  {
+	     int k=0;int login=0;
+	     while(k<4&&login==0)
+	     {
+		     clrscr();
+	        cout<<"\n\t===================================================================="
+               <<"\n\t                          GLOBAL TRAVELS                            "
+	            <<"\n\t====================================================================";
+		     cout<<"\n\n\n";
+		     cout<<"\n\tThis Software Is Password Protected.";
+		     cout<<"\n\n\tEnter the password:";
+		     char p[9],pass[9];
+		     strcpy(p,"password");
+		     pass[0]=getch();
+			  cout<<"*";
+		     pass[1]=getch();
+           cout<<"*";
+		     pass[2]=getch();
+			  cout<<"*";
+		     pass[3]=getch();
+           cout<<"*";
+		     pass[4]=getch();
+		     cout<<"*";
+		     pass[5]=getch();
+			  cout<<"*";
+		     pass[6]=getch();
+			  cout<<"*";
+	        pass[7]=getch();
+			  cout<<"*";
+	        pass[8]='\0';
+
+
+		     if(strcmp(pass,p)==0)
+		     {
+		        cout<<"\n\n\tSUCCESS!! Press ENTER To Continue. ";
+	           getch();
+		        login=1;
+		     }
+		     else
+		     {
+	           cout<<"\n\n\tPassword Incorrect!!";
+		        cout<<"\n\n\tWant to enter password again ?(y/n) : ";
+		        char g;
+		        cin>>g;
+		        if(g=='y'||g=='Y')
+		           k++;
+		        else
+		        {
+                 cout<<"\n\n\n\tExiting from the software....";
+			   	  exit(0);
+		        }
+		     }
+		  }
+        if(k==4)
+	     cout<<"\n\n\tYou Have Entered Wrong Password 4 Times."
+	         <<"\n\n\tProgram Terminated";
+        char ch1='y';
+		  while((ch1=='y'||ch1=='Y')&& login==1)
+        {
+			  clrscr();
+	        cout<<"\n\t===================================================================="
+	            <<"\n\t                          GLOBAL TRAVELS                            "
+	            <<"\n\t====================================================================";
+			  cout<<"\n\n\t\tM E N U !!! ";
+			  cout<<"\n\n\t(1.) Add Record . ";
+			  cout<<"\n\n\t(2.) Display Flight Details . ";
+			  cout<<"\n\n\t(3.) Search A Record . ";
+			  cout<<"\n\n\t(4.) Modify A Record . ";
+			  cout<<"\n\n\t(5.) Delete A Record . ";
+           cout<<"\n\n\t(6.) Exit.";
+
+
+			  int choice1;
+	        cout<<"\n\n\tEnter your choice... : ";
+			  cin>>choice1;
+			  clrscr();
+			  switch(choice1)
+			  {
+		         case 1 : p.add();
+			               break ;
+
+		         case 2 : p.display();
+		                  getch();
+		                  break ;
+               case 3 : p.search();
+				            break ;
+               case 4 : p.mod();
+		                  getch();
+                        break ;
+		         case 5 : p.del();
+		                  getch();
+		                  break ;
+
+	           case 6 : cout<<"\n\n\tExiting from the software ... ";
+                       cout<<"\n\n\tThanks for trying it..Press ENTER";
+		                 getch();
+							  exit(0);
+							  break ;
+             default : cout<<"\n\n\n\tUnknown choice...";
+		                 cout<<"\n\n\tWant to enter the choice again?(y/n)";
+							  cin>>ch1;
+		     }
+        }
+     }
+     getch();
+  }
+
+// End of Program
